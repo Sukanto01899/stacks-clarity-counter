@@ -1,11 +1,8 @@
-import type {
-  ClarityValue,
-  TransactionResult,
-} from "@stacks/connect/dist/types/methods";
+import type { TransactionResult } from "@stacks/connect/dist/types/methods";
 
 import { useEffect, useState } from "react";
 import { request } from "@stacks/connect";
-import { fetchCallReadOnlyFunction } from "@stacks/transactions";
+import { fetchCallReadOnlyFunction, cvToValue } from "@stacks/transactions";
 
 function RubelContract({ address }: { address: string }) {
   const [txLoading, setTxLoading] = useState(false);
@@ -39,7 +36,7 @@ function RubelContract({ address }: { address: string }) {
 
   async function getMessageCountAtBlock() {
     try {
-      const result: ClarityValue = await fetchCallReadOnlyFunction({
+      const result = await fetchCallReadOnlyFunction({
         contractAddress: "SPFJRRM1NTW9V3AQ324NMWHSNAZQ6YM1D5XK1BHA",
         contractName: "message-board",
         functionName: "get-counter",
@@ -49,8 +46,7 @@ function RubelContract({ address }: { address: string }) {
       });
 
       if (result) {
-        // .value.toString()
-        const value = parseInt(result?.value.toString());
+        const value = Number(cvToValue(result));
         console.log(value);
         setTotalValue(value);
       }
