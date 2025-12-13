@@ -5,7 +5,7 @@ import type {
 
 import { useEffect, useState } from "react";
 import { request } from "@stacks/connect";
-import { fetchCallReadOnlyFunction } from "@stacks/transactions";
+import { cvToValue, fetchCallReadOnlyFunction } from "@stacks/transactions";
 
 function SukantoContract({ address }: { address: string }) {
   const [txLoading, setTxLoading] = useState(false);
@@ -50,7 +50,7 @@ function SukantoContract({ address }: { address: string }) {
 
       if (result) {
         // .value.toString()
-        const value = parseInt(result?.value.toString());
+        const value = Number(cvToValue(result));
         console.log(value);
         setTotalValue(value);
       }
