@@ -1,12 +1,7 @@
-import type {
-  ClarityValue,
-  GetAddressesResult,
-  TransactionResult,
-} from "@stacks/connect/dist/types/methods";
+import type { GetAddressesResult } from "@stacks/connect/dist/types/methods";
 import "./App.css";
 import { useEffect, useState } from "react";
-import { request } from "@stacks/connect";
-import { Cl, fetchCallReadOnlyFunction, Pc } from "@stacks/transactions";
+
 import {
   connect,
   disconnect,
@@ -14,12 +9,13 @@ import {
   getLocalStorage,
 } from "@stacks/connect";
 
+import SukantoContract from "./components/SukantoContract";
+import NahianContract from "./components/NahianConract";
+import RubelContract from "./components/RubelContract";
+
 function App() {
   const [address, setAddress] = useState("");
   const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [txLoading, setTxLoading] = useState(false);
-  const [txHash, setTxHash] = useState("");
-  const [totalValue, setTotalValue] = useState<number | null>();
 
   useEffect(() => {
     const userData = getLocalStorage();
@@ -48,59 +44,6 @@ function App() {
     setIsWalletConnected(false);
     console.log("User disconnected");
   }
-
-  async function addMessage() {
-    try {
-      setTxLoading(true);
-      const result: TransactionResult = await request("stx_callContract", {
-        contract: "SP1G4ZDXED8XM2XJ4Q4GJ7F4PG4EJQ1KKXRCD0S3K.message-board",
-        functionName: "increment",
-        functionArgs: [],
-        network: "mainnet",
-        // postConditions: [postCond_1],
-        postConditionMode: "deny",
-        sponsored: false,
-      });
-
-      if (result && result?.txid) {
-        setTxHash("0x" + result.txid);
-      }
-
-      console.log(result);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setTxLoading(false);
-    }
-  }
-
-  async function getMessageCountAtBlock() {
-    try {
-      const result: ClarityValue = await fetchCallReadOnlyFunction({
-        contractAddress: "SP1G4ZDXED8XM2XJ4Q4GJ7F4PG4EJQ1KKXRCD0S3K",
-        contractName: "message-board",
-        functionName: "get-counter",
-        functionArgs: [],
-        network: "mainnet",
-        senderAddress: address,
-      });
-
-      if (result) {
-        // .value.toString()
-        const value = parseInt(result?.value.toString());
-        console.log(value);
-        setTotalValue(value);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  useEffect(() => {
-    if (address || txHash) {
-      getMessageCountAtBlock();
-    }
-  }, [address, txHash]);
 
   return (
     <main className="w-full">
@@ -136,30 +79,9 @@ function App() {
         </div>
       </header>
 
-      {/* Main */}
-      <main className="bg-amber-200/50 mt-4 w-1/3 mx-auto p-6 space-y-6">
-        <div className="flex flex-col items-center justify-center">
-          <h3 className="text-2xl font-semibold">Your Increment</h3>
-          <p className="text-xl">{totalValue ? totalValue : "Loading..."}</p>
-        </div>
-
-        <button
-          onClick={addMessage}
-          className="w-full py-2 text-xl bg-amber-600 "
-        >
-          {txLoading ? "Pending..." : "Increment"}
-        </button>
-
-        {txHash && (
-          <a
-            target="_blank"
-            className="text-blue-500 underline text-center mx-auto"
-            href={`https://explorer.hiro.so/txid/${txHash}?chain=mainnet`}
-          >
-            Transaction Details
-          </a>
-        )}
-      </main>
+      <SukantoContract address={address} />
+      <NahianContract address={address} />
+      <RubelContract address={address} />
     </main>
   );
 }
