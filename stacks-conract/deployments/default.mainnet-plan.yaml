@@ -9,10 +9,10 @@ plan:
     - id: 0
       transactions:
         - contract-publish:
-            contract-name: message-board
+            contract-name: clar-token
             expected-sender: SP1G4ZDXED8XM2XJ4Q4GJ7F4PG4EJQ1KKXRCD0S3K
-            cost: 6370
-            path: "contracts\\message-board.clar"
+            cost: 23390
+            path: "contracts\\clar-token.clar"
             anchor-block-only: true
             clarity-version: 3
       epoch: "3.2"

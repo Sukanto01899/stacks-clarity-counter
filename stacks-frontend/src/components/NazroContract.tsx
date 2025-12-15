@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { request } from "@stacks/connect";
 import { cvToValue, fetchCallReadOnlyFunction } from "@stacks/transactions";
 
-function MahiContract({ address }: { address: string }) {
+function NazroContract({ address }: { address: string }) {
   const [txLoading, setTxLoading] = useState(false);
   const [txHash, setTxHash] = useState("");
   const [totalValue, setTotalValue] = useState<number | null>();
@@ -16,7 +16,7 @@ function MahiContract({ address }: { address: string }) {
     try {
       setTxLoading(true);
       const result: TransactionResult = await request("stx_callContract", {
-        contract: "SP1N7BPRKDDSEYTFVMY8K9AWNHCSZ7CWJAG1KFD0N.message-board",
+        contract: "SP2E7S861KY8HBXNNKW2DG771MAXMSNXAXWD5EGY.message-board",
         functionName: "increment",
         functionArgs: [],
         network: "mainnet",
@@ -40,7 +40,7 @@ function MahiContract({ address }: { address: string }) {
   async function getMessageCountAtBlock() {
     try {
       const result: ClarityValue = await fetchCallReadOnlyFunction({
-        contractAddress: "SP1N7BPRKDDSEYTFVMY8K9AWNHCSZ7CWJAG1KFD0N",
+        contractAddress: "SP2E7S861KY8HBXNNKW2DG771MAXMSNXAXWD5EGY",
         contractName: "message-board",
         functionName: "get-counter",
         functionArgs: [],
@@ -68,7 +68,7 @@ function MahiContract({ address }: { address: string }) {
   return (
     <main className="bg-amber-200/50 mt-4 w-1/3 mx-auto p-6 space-y-6">
       <div className="flex flex-col items-center justify-center">
-        <h3 className="text-2xl font-semibold">Mahi Counter</h3>
+        <h3 className="text-2xl font-semibold">Nazro Counter</h3>
         <p className="text-xl">{totalValue ? totalValue : "Loading..."}</p>
       </div>
 
@@ -92,4 +92,4 @@ function MahiContract({ address }: { address: string }) {
   );
 }
 
-export default MahiContract;
+export default NazroContract;

@@ -12,6 +12,9 @@ import {
 import SukantoContract from "./components/SukantoContract";
 import NahianContract from "./components/NahianConract";
 import RubelContract from "./components/RubelContract";
+import TanbirNabilContract from "./components/TanvirNabilContract";
+import MahiContract from "./components/MahiContract";
+import NazroContract from "./components/NazroContract";
 
 function App() {
   const [address, setAddress] = useState("");
@@ -82,6 +85,9 @@ function App() {
       <SukantoContract address={address} />
       <NahianContract address={address} />
       <RubelContract address={address} />
+      <MahiContract address={address} />
+      <TanbirNabilContract address={address} />
+      <NazroContract address={address} />
     </main>
   );
 }
