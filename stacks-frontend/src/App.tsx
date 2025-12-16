@@ -1,6 +1,6 @@
 import type { GetAddressesResult } from "@stacks/connect/dist/types/methods";
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   connect,
@@ -15,19 +15,14 @@ import RubelContract from "./components/RubelContract";
 import TanbirNabilContract from "./components/TanvirNabilContract";
 import MahiContract from "./components/MahiContract";
 import NazroContract from "./components/NazroContract";
+import { manageChainhooks } from "../lib/manageChainhooks";
 
 function App() {
-  const [address, setAddress] = useState("");
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
-
-  useEffect(() => {
+  const [address, setAddress] = useState(() => {
     const userData = getLocalStorage();
-    if (userData?.addresses) {
-      const stxAddress = userData.addresses.stx[0].address;
-      setAddress(stxAddress);
-      setIsWalletConnected(true);
-    }
-  }, []);
+    return userData?.addresses?.stx?.[0]?.address ?? "";
+  });
+  const isWalletConnected = Boolean(address);
 
   async function connectWallet() {
     if (isConnected()) {
@@ -38,18 +33,17 @@ function App() {
     const response: GetAddressesResult = await connect();
     if (response) {
       setAddress(response.addresses[2].address);
-      setIsWalletConnected(true);
     }
   }
   function logout() {
     disconnect();
     setAddress("");
-    setIsWalletConnected(false);
     console.log("User disconnected");
   }
 
   return (
     <main className="w-full">
+      <button onClick={() => manageChainhooks}>Check Chainhook</button>
       {/* Header */}
       <header className="bg-stone-950 text-white">
         <div className="w-2/3 mx-auto">
