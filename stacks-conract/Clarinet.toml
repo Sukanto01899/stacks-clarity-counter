@@ -7,12 +7,20 @@ cache_dir = '.\.cache'
 
 [[project.requirements]]
 contract_id = 'SM3VDXK3WZZSA84XXFKAFAF15NNZX32CTSG82JFQ4.sbtc-deposit'
-[contracts.clar-token]
-path = 'contracts/clar-token.clar'
+[contracts.bitcoin-stamp]
+path = 'contracts/bitcoin-stamp.clar'
 clarity_version = 3
 epoch = 'latest'
 
+[contracts.daily-gm]
+path = 'contracts/daily-gm.clar'
+clarity_version = 3
+epoch = 'latest'
 
+[contracts.stamp-token]
+path = 'contracts/stamp-token.clar'
+clarity_version = 3
+epoch = 'latest'
 [repl.analysis]
 passes = ['check_checker']
 

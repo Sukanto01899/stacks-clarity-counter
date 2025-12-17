@@ -1,44 +1,60 @@
-import dotenv from "dotenv"
-import express from "express"
-const app = express();
-import {
-  ChainhooksClient,
-  CHAINHOOKS_BASE_URL,
-} from "@hirosystems/chainhooks-client";
+import express from "express";
+import cors from "cors";
 
+const app = express();
+const PORT = 3000;
+
+// --------------------
+// Middleware
+// --------------------
+app.use(cors());
 app.use(express.json());
 
-const client = new ChainhooksClient({
-  baseUrl: CHAINHOOKS_BASE_URL.mainnet,
-  apiKey: process.env.HIRO_API_KEY,
+// --------------------
+// Health check
+// --------------------
+app.get("/", (_, res) => {
+  res.send("✅ Chainhook server running");
 });
 
-export async function manageChainhooks() {
+// --------------------
+// Chainhook Webhook
+// --------------------
+app.post("/webhook/chainhook", (req, res) => {
   try {
-    // Check API status
-    const status = await client.getStatus();
-    console.log("API Status:", status.status);
-    console.log("Server Version:", status.server_version);
+    const payload = req.body;
 
-    // List all chainhooks
-    const { results, total } = await client.getChainhooks({ limit: 50 });
-    console.log(`Found ${total} chainhooks`);
+    console.log("🔔 Chainhook event received");
+    console.log(JSON.stringify(payload, null, 2));
 
-    // Get details of first chainhook
-    if (results.length > 0) {
-      const firstChainhook = await client.getChainhook(results[0].uuid);
-      console.log("First chainhook:", firstChainhook.definition.name);
+    /**
+     * এখানে আপনি যা করতে পারেন:
+     * - DB insert
+     * - Cache update
+     * - Reward logic
+     * - Notification
+     */
+
+    // Example: contract call detect
+    if (payload?.event_type === "contract_call") {
+      const fn = payload?.contract_call?.function_name;
+      const sender = payload?.contract_call?.sender;
+
+      console.log(`👉 Function called: ${fn}`);
+      console.log(`👉 Called by: ${sender}`);
     }
-  } catch (error) {
-    console.error("Error managing chainhooks:", error);
-  }
-}
 
-app.get("/", (req, res) => {
-  manageChainhooks();
-  res.send("ok")
+    // Always respond 200 (important)
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    console.error("❌ Webhook error:", err);
+    res.status(500).json({ ok: false });
+  }
 });
 
-app.listen(4000, () => {
-  console.log("server running");
+// --------------------
+// Start server
+// --------------------
+app.listen(PORT, () => {
+  console.log(`🚀 Chainhook server listening on http://localhost:${PORT}`);
 });

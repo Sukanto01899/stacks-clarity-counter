@@ -22,8 +22,8 @@
 ;; -------------------------
 ;; Token metadata
 ;; -------------------------
-(define-constant TOKEN_NAME "My Token")
-(define-constant TOKEN_SYMBOL "MTK")
+(define-constant TOKEN_NAME "Stamp Token")
+(define-constant TOKEN_SYMBOL "STAMP")
 (define-constant TOKEN_DECIMALS u6)
 
 ;; -------------------------
@@ -37,8 +37,7 @@
 ;; -------------------------
 (begin
     (ft-mint? my-token INITIAL_SUPPLY CONTRACT_OWNER)
-)
-;; -------------------------------------------------
+);; -------------------------------------------------
 ;; Read-only functions
 ;; -------------------------------------------------
 
