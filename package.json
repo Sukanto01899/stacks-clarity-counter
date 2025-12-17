@@ -1,0 +1,20 @@
+{
+  "name": "stamp-dapp",
+  "version": "1.0.0",
+  "description": "Stamp is a Bitcoin layer 2 stacks blockchain NFT minting dapp",
+  "homepage": "https://github.com/Sukanto01899/stacks-clarity-counter#readme",
+  "bugs": {
+    "url": "https://github.com/Sukanto01899/stacks-clarity-counter/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sukanto01899/stacks-clarity-counter.git"
+  },
+  "license": "ISC",
+  "author": "sukanto",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
