@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { openContractCall } from "@stacks/connect";
 import {
   cvToValue,
@@ -6,7 +6,7 @@ import {
   stringAsciiCV,
   PostConditionMode,
 } from "@stacks/transactions";
-import { STACKS_TESTNET } from "@stacks/network";
+import { STACKS_MAINNET } from "@stacks/network";
 
 const BitcoinStampMint = ({
   userAddress,
@@ -25,9 +25,9 @@ const BitcoinStampMint = ({
   const [success, setSuccess] = useState("");
   const [mintCount, setMintCount] = useState(0);
 
-  const CONTRACT_ADDRESS = "ST1G4ZDXED8XM2XJ4Q4GJ7F4PG4EJQ1KKXVPSAX13";
+  const CONTRACT_ADDRESS = "SP1G4ZDXED8XM2XJ4Q4GJ7F4PG4EJQ1KKXRCD0S3K";
   const CONTRACT_NAME = "bitcoin-stamp";
-  const network = STACKS_TESTNET;
+  const network = STACKS_MAINNET;
 
   const loadContractData = async () => {
     try {

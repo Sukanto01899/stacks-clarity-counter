@@ -6,7 +6,7 @@ import {
   fetchCallReadOnlyFunction,
   standardPrincipalCV,
 } from "@stacks/transactions";
-import { STACKS_TESTNET } from "@stacks/network";
+import { STACKS_MAINNET } from "@stacks/network";
 
 interface UserData {
   totalCheckins: number;
@@ -40,9 +40,9 @@ const DailyCheckinCard = ({
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
 
-  const CONTRACT_ADDRESS = "ST1G4ZDXED8XM2XJ4Q4GJ7F4PG4EJQ1KKXVPSAX13";
+  const CONTRACT_ADDRESS = "SP1G4ZDXED8XM2XJ4Q4GJ7F4PG4EJQ1KKXRCD0S3K";
   const CONTRACT_NAME = "daily-gm";
-  const network = STACKS_TESTNET;
+  const network = STACKS_MAINNET;
 
   // Load user data from contract
   const loadUserData = async (address: string): Promise<void> => {
