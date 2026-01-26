@@ -8,7 +8,8 @@ Real-time event monitoring for a Bitcoin Stamp NFT contract using Hiro Chainhook
 - Separate mint types (paid, free, owner)
 - REST API for stats and historical events
 - Webhook endpoints secured with a shared token
-- Optional “data fetch” helper via Hiro Stacks API
+- Optional data fetch helper via Hiro Stacks API
+- Simple STX faucet endpoint (testnet by default)
 
 ## Prerequisites
 
@@ -77,6 +78,8 @@ CHAINHOOK_AUTH_TOKEN=your-secret-token-here
 - `GET /api/transfers?limit=50&offset=0`
 - `GET /api/activity/recent?limit=20`
 - `GET /api/user/:address`
+- `GET /api/faucet/status`
+- `POST /api/faucet/claim`
 
 ### Fetch Tx (Hiro Stacks API)
 
@@ -87,6 +90,27 @@ This fetches transaction JSON from Hiro Stacks API:
 - Mainnet: `https://api.mainnet.hiro.so`
 
 Controlled by `STACKS_NETWORK` or overridden via `STACKS_API_BASE_URL`.
+
+### Faucet
+
+Configure the faucet in `.env`:
+
+```env
+FAUCET_ENABLED=true
+FAUCET_PRIVATE_KEY=your_testnet_private_key
+FAUCET_ADDRESS=your_testnet_address
+FAUCET_AMOUNT_STX=1
+FAUCET_COOLDOWN_MINUTES=1440
+FAUCET_IP_COOLDOWN_MINUTES=1440
+```
+
+Request STX:
+
+```bash
+curl -X POST http://localhost:3000/api/faucet/claim \
+  -H "content-type: application/json" \
+  -d "{\"address\":\"STX_ADDRESS\"}"
+```
 
 ## Webhook Endpoints
 

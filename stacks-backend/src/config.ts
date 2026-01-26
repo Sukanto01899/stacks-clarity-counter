@@ -34,6 +34,24 @@ export const EXTERNAL_URL =
 export const STACKS_NETWORK = (process.env.STACKS_NETWORK ??
   "testnet") as StacksNetwork;
 
+// ============================================
+// Faucet configuration
+export const FAUCET_ENABLED =
+  (process.env.FAUCET_ENABLED ?? "true").toLowerCase() === "true";
+export const FAUCET_ALLOW_MAINNET =
+  (process.env.FAUCET_ALLOW_MAINNET ?? "false").toLowerCase() === "true";
+export const FAUCET_PRIVATE_KEY = process.env.FAUCET_PRIVATE_KEY ?? "";
+export const FAUCET_ADDRESS = process.env.FAUCET_ADDRESS ?? "";
+export const FAUCET_AMOUNT_STX = process.env.FAUCET_AMOUNT_STX ?? "1";
+export const FAUCET_COOLDOWN_MINUTES = parseIntOrDefault(
+  process.env.FAUCET_COOLDOWN_MINUTES,
+  60 * 24
+);
+export const FAUCET_IP_COOLDOWN_MINUTES = parseIntOrDefault(
+  process.env.FAUCET_IP_COOLDOWN_MINUTES,
+  FAUCET_COOLDOWN_MINUTES
+);
+
 // Hiro Stacks API base URL (useful for read-only data fetch)
 export const STACKS_API_BASE_URL =
   process.env.STACKS_API_BASE_URL ??
