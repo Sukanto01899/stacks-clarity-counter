@@ -15,6 +15,12 @@ type FaucetResponse = {
   nextEligibleAt: number;
 };
 
+type FaucetErrorResponse = {
+  error?: string;
+  message?: string;
+  nextEligibleAt?: number;
+};
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
 
 function getApiBaseUrl(): string {
@@ -96,13 +102,17 @@ const StxFaucet = ({
         body: JSON.stringify({ address }),
       });
 
-      const data = (await response.json()) as
-        | FaucetResponse
-        | { error?: string; nextEligibleAt?: number; message?: string };
+      const data = (await response.json()) as FaucetResponse | FaucetErrorResponse;
 
       if (!response.ok) {
-        setError(data.error ?? data.message ?? "Faucet request failed.");
-        if (data.nextEligibleAt) setNextEligibleAt(data.nextEligibleAt);
+        const errorData = data as FaucetErrorResponse;
+        setError(
+          errorData.error ??
+            errorData.message ??
+            "Faucet request failed."
+        );
+        if (errorData.nextEligibleAt)
+          setNextEligibleAt(errorData.nextEligibleAt);
         return;
       }
 
