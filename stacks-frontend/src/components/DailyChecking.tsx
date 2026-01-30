@@ -40,7 +40,7 @@ const DailyCheckinCard = ({
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
 
-  const CONTRACT_ADDRESS = "SP1G4ZDXED8XM2XJ4Q4GJ7F4PG4EJQ1KKXRCD0S3K";
+  const CONTRACT_ADDRESS = "SP1K2XGT5RNGT42N49BH936VDF8NXWNZJY15BPV4F";
   const CONTRACT_NAME = "daily-gm";
   const network = STACKS_MAINNET;
 

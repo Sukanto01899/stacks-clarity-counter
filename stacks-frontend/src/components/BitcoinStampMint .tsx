@@ -25,7 +25,7 @@ const BitcoinStampMint = ({
   const [success, setSuccess] = useState("");
   const [mintCount, setMintCount] = useState(0);
 
-  const CONTRACT_ADDRESS = "SP1G4ZDXED8XM2XJ4Q4GJ7F4PG4EJQ1KKXRCD0S3K";
+  const CONTRACT_ADDRESS = "SP1K2XGT5RNGT42N49BH936VDF8NXWNZJY15BPV4F";
   const CONTRACT_NAME = "bitcoin-stamp";
   const network = STACKS_MAINNET;
 
