@@ -12,7 +12,7 @@ import {
 import Header from "./components/Header";
 import DailyCheckinCard from "./components/DailyChecking";
 import BitcoinStampMint from "./components/BitcoinStampMint ";
-import StxFaucet from "./components/StxFaucet";
+// import StxFaucet from "./components/StxFaucet";
 
 function App() {
   const [address, setAddress] = useState(() => {
@@ -61,10 +61,10 @@ function App() {
           connectWallet={connectWallet}
         />
 
-        <StxFaucet
+        {/* <StxFaucet
           userAddress={address}
           connectWallet={connectWallet}
-        />
+        /> */}
       </div>
     </main>
   );
