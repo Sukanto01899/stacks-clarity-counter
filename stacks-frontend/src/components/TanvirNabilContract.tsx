@@ -65,7 +65,7 @@ function TanbirNabilContract({ address }: { address: string }) {
   return (
     <main className="bg-amber-200/50 mt-4 w-1/3 mx-auto p-6 space-y-6">
       <div className="flex flex-col items-center justify-center">
-        <h3 className="text-2xl font-semibold">Tanvir Nabil Counter</h3>
+        <h3 className="text-2xl font-semibold">Tanvir Nabil Contract</h3>
         <p className="text-xl">{totalValue ? totalValue : "Loading..."}</p>
       </div>
 

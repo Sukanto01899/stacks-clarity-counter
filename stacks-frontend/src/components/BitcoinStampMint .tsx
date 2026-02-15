@@ -90,7 +90,7 @@ const BitcoinStampMint = ({
       setLoading(true);
       setError("");
 
-      await connectWallet();
+      connectWallet();
 
       setSuccess("Wallet connected successfully!");
       setTimeout(() => setSuccess(""), 2000);
