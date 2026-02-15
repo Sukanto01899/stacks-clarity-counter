@@ -90,7 +90,7 @@ const StxFaucet = ({
 
     const address = addressInput.trim();
     if (!address) {
-      setError("Please enter a Stacks address.");
+      setError("Please enter a Stacks address");
       return;
     }
 
@@ -102,14 +102,14 @@ const StxFaucet = ({
         body: JSON.stringify({ address }),
       });
 
-      const data = (await response.json()) as FaucetResponse | FaucetErrorResponse;
+      const data = (await response.json()) as
+        | FaucetResponse
+        | FaucetErrorResponse;
 
       if (!response.ok) {
         const errorData = data as FaucetErrorResponse;
         setError(
-          errorData.error ??
-            errorData.message ??
-            "Faucet request failed."
+          errorData.error ?? errorData.message ?? "Faucet request failed.",
         );
         if (errorData.nextEligibleAt)
           setNextEligibleAt(errorData.nextEligibleAt);
@@ -118,7 +118,7 @@ const StxFaucet = ({
 
       const result = data as FaucetResponse;
       setTxId(result.txId);
-      setSuccess(`Sent ${result.amountStx} STX. Transaction pending.`);
+      setSuccess(`Sent ${result.amountStx} STX. Transaction pending`);
       setNextEligibleAt(result.nextEligibleAt);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
