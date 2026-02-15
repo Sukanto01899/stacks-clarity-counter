@@ -4,13 +4,14 @@ import { ContractCallMatch } from "./types";
 
 export function parseIntOrDefault(
   value: string | undefined,
-  fallback: number
+  fallback: number,
 ): number {
   if (!value) return fallback;
   const parsed = Number.parseInt(value, 10);
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+// get error msg
 export function getErrorMessage(error: unknown): string | undefined {
   if (error instanceof Error) return error.message;
   if (typeof error === "string") return error;
@@ -50,7 +51,7 @@ export function isChainhookEvent(payload: unknown): payload is ChainhookEvent {
 
 export function extractContractCallsFromPayload(
   payload: StacksPayload,
-  contractIdentifier: string
+  contractIdentifier: string,
 ): ContractCallMatch[] {
   const matches: ContractCallMatch[] = [];
 
@@ -63,8 +64,8 @@ export function extractContractCallsFromPayload(
       if (
         typeof (tx as unknown as { metadata?: { kind?: { type?: unknown } } })
           ?.metadata?.kind?.type === "string" &&
-        (tx as unknown as { metadata: { kind: { type: string } } }).metadata.kind
-          .type === "ContractCall"
+        (tx as unknown as { metadata: { kind: { type: string } } }).metadata
+          .kind.type === "ContractCall"
       ) {
         const localTx = tx as unknown as {
           transaction_identifier: { hash: string };
@@ -73,13 +74,19 @@ export function extractContractCallsFromPayload(
             success: boolean;
             result: string;
             kind: {
-              data: { contract_identifier: string; method: string; args: string[] };
+              data: {
+                contract_identifier: string;
+                method: string;
+                args: string[];
+              };
               type: string;
             };
           };
         };
 
-        if (localTx.metadata.kind.data.contract_identifier !== contractIdentifier)
+        if (
+          localTx.metadata.kind.data.contract_identifier !== contractIdentifier
+        )
           continue;
 
         matches.push({
@@ -96,19 +103,22 @@ export function extractContractCallsFromPayload(
       }
 
       // Hiro Chainhooks payload shape (chainhooks-client): tx.metadata.type + operations[*].type === 'contract_call'
-      const txType = (tx as unknown as { metadata?: { type?: unknown } })?.metadata
-        ?.type;
+      const txType = (tx as unknown as { metadata?: { type?: unknown } })
+        ?.metadata?.type;
       if (txType !== "contract_call") continue;
 
-      const operations = (
-        tx as unknown as { operations?: unknown }
-      )?.operations;
+      const operations = (tx as unknown as { operations?: unknown })
+        ?.operations;
       if (!Array.isArray(operations)) continue;
 
       const contractCallOp = operations.find((op: unknown) => {
         const o = op as {
           type?: unknown;
-          metadata?: { contract_identifier?: unknown; function_name?: unknown; args?: unknown };
+          metadata?: {
+            contract_identifier?: unknown;
+            function_name?: unknown;
+            args?: unknown;
+          };
         };
         return (
           o.type === "contract_call" &&
@@ -121,14 +131,17 @@ export function extractContractCallsFromPayload(
 
       const functionName = (
         contractCallOp as {
-          metadata?: { function_name?: unknown; args?: unknown; contract_identifier?: unknown };
+          metadata?: {
+            function_name?: unknown;
+            args?: unknown;
+            contract_identifier?: unknown;
+          };
         }
       )?.metadata?.function_name;
       if (typeof functionName !== "string") continue;
 
-      const rawArgs = (
-        contractCallOp as { metadata?: { args?: unknown } }
-      )?.metadata?.args;
+      const rawArgs = (contractCallOp as { metadata?: { args?: unknown } })
+        ?.metadata?.args;
       const args: string[] = Array.isArray(rawArgs)
         ? rawArgs.map((a: unknown) => {
             const arg = a as { repr?: unknown };
@@ -141,20 +154,22 @@ export function extractContractCallsFromPayload(
       const sender = (
         tx as unknown as { metadata?: { sender_address?: unknown } }
       )?.metadata?.sender_address;
-      const result = (
-        tx as unknown as { metadata?: { result?: unknown } }
-      )?.metadata?.result;
+      const result = (tx as unknown as { metadata?: { result?: unknown } })
+        ?.metadata?.result;
       let resultString = "";
       if (typeof result === "string") {
         resultString = result;
-      } else if (typeof result === "object" && result !== null && "repr" in result) {
+      } else if (
+        typeof result === "object" &&
+        result !== null &&
+        "repr" in result
+      ) {
         const repr = (result as { repr?: unknown }).repr;
         if (typeof repr === "string") resultString = repr;
       }
 
-      const status = (
-        tx as unknown as { metadata?: { status?: unknown } }
-      )?.metadata?.status;
+      const status = (tx as unknown as { metadata?: { status?: unknown } })
+        ?.metadata?.status;
       const success = status === "success";
 
       matches.push({

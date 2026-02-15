@@ -15,7 +15,7 @@ const Header = ({
     <header className="bg-stone-950 text-white">
       <div className="w-full mx-auto px-4 py-4 lg:px-12">
         <div className="flex justify-between items-center ">
-          <p className="text-xl font-bold">Stamp</p>
+          <p className="text-xl font-bold">STX Stamp</p>
           <div>
             {isWalletConnected ? (
               address && (
@@ -26,7 +26,7 @@ const Header = ({
                   </p>
 
                   <button onClick={logout} className="bg-red-500 py-2 px-2">
-                    Logout
+                    Disconnect
                   </button>
                 </div>
               )
