@@ -41,7 +41,7 @@ const DailyCheckinCard = ({
   const [success, setSuccess] = useState<string>("");
 
   const CONTRACT_ADDRESS = "SP1K2XGT5RNGT42N49BH936VDF8NXWNZJY15BPV4F";
-  const CONTRACT_NAME = "daily-gm";
+  const CONTRACT_NAME = "daily-gm-v1";
   const network = STACKS_MAINNET;
 
   // Load user data from contract
