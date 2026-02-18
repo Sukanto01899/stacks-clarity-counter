@@ -36,24 +36,24 @@ plan:
     - id: 1
       transactions:
         - contract-publish:
-            contract-name: bitcoin-stamp-v1
+            contract-name: bitcoin-stamp-v2
             expected-sender: ST1K2XGT5RNGT42N49BH936VDF8NXWNZJY0N432CM
             cost: 61200
-            path: "contracts\\bitcoin-stamp-v1.clar"
+            path: "contracts\\bitcoin-stamp-v2.clar"
             anchor-block-only: true
             clarity-version: 3
         - contract-publish:
-            contract-name: daily-gm-v1
+            contract-name: daily-gm-v2
             expected-sender: ST1K2XGT5RNGT42N49BH936VDF8NXWNZJY0N432CM
             cost: 43350
-            path: "contracts\\daily-gm-v1.clar"
+            path: "contracts\\daily-gm-v2.clar"
             anchor-block-only: true
             clarity-version: 3
         - contract-publish:
-            contract-name: stamp-token-v1
+            contract-name: stamp-token-v2
             expected-sender: ST1K2XGT5RNGT42N49BH936VDF8NXWNZJY0N432CM
             cost: 23430
-            path: "contracts\\stamp-token-v1.clar"
+            path: "contracts\\stamp-token-v2.clar"
             anchor-block-only: true
             clarity-version: 3
       epoch: "3.2"
