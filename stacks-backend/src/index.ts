@@ -41,7 +41,7 @@ async function waitForChainhookNode(chainhookNodeUrl: string): Promise<void> {
   }
 
   throw new Error(
-    `Timed out waiting for Chainhook node at ${chainhookNodeUrl} (check CHAINHOOK_NODE_URL and that the service is running)`
+    `Timed out waiting for Chainhook node at ${chainhookNodeUrl} (check CHAINHOOK_NODE_URL and that the service is running)`,
   );
 }
 
@@ -49,12 +49,12 @@ type PredicateActiveStatus = boolean | "missing";
 
 async function getPredicateStatus(
   chainhookNodeUrl: string,
-  uuid: string
+  uuid: string,
 ): Promise<PredicateActiveStatus> {
   try {
     const response = await fetch(
       `${chainhookNodeUrl}/v1/chainhooks/${encodeURIComponent(uuid)}`,
-      { method: "GET", headers: { accept: "application/json" } }
+      { method: "GET", headers: { accept: "application/json" } },
     );
 
     if (response.status === 404) return "missing";
@@ -81,11 +81,11 @@ async function getPredicateStatus(
 async function deletePredicate(
   chainhookNodeUrl: string,
   chain: "stacks" | "bitcoin",
-  uuid: string
+  uuid: string,
 ): Promise<void> {
   await fetch(
     `${chainhookNodeUrl}/v1/chainhooks/${chain}/${encodeURIComponent(uuid)}`,
-    { method: "DELETE", headers: { "content-type": "application/json" } }
+    { method: "DELETE", headers: { "content-type": "application/json" } },
   );
 }
 
@@ -131,7 +131,7 @@ function buildContractCallPredicate(options: {
 
 async function registerPredicates(
   predicates: Predicate[],
-  chainhookNodeUrl: string
+  chainhookNodeUrl: string,
 ): Promise<void> {
   await waitForChainhookNode(chainhookNodeUrl);
 
@@ -143,7 +143,7 @@ async function registerPredicates(
       await deletePredicate(
         chainhookNodeUrl,
         predicate.chain as "stacks",
-        predicate.uuid
+        predicate.uuid,
       );
     }
 
@@ -244,13 +244,13 @@ async function registerChainhooksViaHiro(options: {
 
 if (!CHAINHOOK_AUTH_TOKEN) {
   console.warn(
-    "Warning: CHAINHOOK_AUTH_TOKEN is not set. Webhook endpoints will reject requests."
+    "Warning: CHAINHOOK_AUTH_TOKEN is not set. Webhook endpoints will reject requests.",
   );
 }
 
 if (CHAINHOOK_PROVIDER === "hiro" && !HIRO_API_KEY) {
   console.warn(
-    "Warning: CHAINHOOK_PROVIDER is 'hiro' but HIRO_API_KEY is not set. Chainhook registration will fail."
+    "Warning: CHAINHOOK_PROVIDER is 'hiro' but HIRO_API_KEY is not set. Chainhook registration will fail.",
   );
 }
 
@@ -262,7 +262,7 @@ app.use(cors());
 app.use(express.json({ limit: "5mb" }));
 
 app.use("/webhooks", webhookRoute);
-app.get("/health", (_req, res) => {
+app.get("/health", (_req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: Date.now() });
 });
 
@@ -312,20 +312,20 @@ const predicates: Predicate[] = chainhookDefinitions.map((def) =>
     externalUrl: EXTERNAL_URL,
     authToken: CHAINHOOK_AUTH_TOKEN,
     webhookPath: def.webhookPath,
-  })
+  }),
 );
 
 const server = app.listen(PORT, async () => {
   console.log(`API server listening on ${EXTERNAL_URL}`);
   console.log(
-    `Config: STACKS_NETWORK=${STACKS_NETWORK} CHAINHOOK_PROVIDER=${CHAINHOOK_PROVIDER} CONTRACT=${CONTRACT_IDENTIFIER}`
+    `Config: STACKS_NETWORK=${STACKS_NETWORK} CHAINHOOK_PROVIDER=${CHAINHOOK_PROVIDER} CONTRACT=${CONTRACT_IDENTIFIER}`,
   );
 
   if (CHAINHOOK_PROVIDER === "hiro") {
     const host = new URL(EXTERNAL_URL).hostname;
     if (host === "localhost" || host === "127.0.0.1") {
       console.warn(
-        `Warning: EXTERNAL_URL (${EXTERNAL_URL}) is not publicly reachable; Hiro Chainhooks cannot deliver webhooks to localhost.`
+        `Warning: EXTERNAL_URL (${EXTERNAL_URL}) is not publicly reachable; Hiro Chainhooks cannot deliver webhooks to localhost.`,
       );
     }
   }
@@ -334,8 +334,8 @@ const server = app.listen(PORT, async () => {
     if (CHAINHOOK_PROVIDER === "hiro") {
       console.log(
         `Registering chainhooks via Hiro API (${STACKS_NETWORK}) at ${chainhooksBaseUrlForNetwork(
-          STACKS_NETWORK
-        )}...`
+          STACKS_NETWORK,
+        )}...`,
       );
 
       const defs = chainhookDefinitions.map((def) =>
@@ -346,7 +346,7 @@ const server = app.listen(PORT, async () => {
           contractIdentifier: CONTRACT_IDENTIFIER,
           webhookPath: def.webhookPath,
           authToken: CHAINHOOK_AUTH_TOKEN,
-        })
+        }),
       );
 
       const registered = await registerChainhooksViaHiro({
@@ -358,12 +358,12 @@ const server = app.listen(PORT, async () => {
       console.log(
         `Chainhooks ready: ${registered
           .map((c) => `${c.definition.name} (${c.uuid})`)
-          .join(", ")}`
+          .join(", ")}`,
       );
     } else {
       if (
         /https?:\/\/api\.(testnet|mainnet)\.hiro\.so\/?$/i.test(
-          CHAINHOOK_NODE_URL
+          CHAINHOOK_NODE_URL,
         )
       ) {
         throw new Error(
@@ -371,12 +371,12 @@ const server = app.listen(PORT, async () => {
             `CHAINHOOK_PROVIDER is set to 'local' but CHAINHOOK_NODE_URL is a Hiro Stacks API URL (${CHAINHOOK_NODE_URL}).`,
             `For Hiro-hosted chainhooks, set CHAINHOOK_PROVIDER=hiro and provide HIRO_API_KEY.`,
             `For a local Chainhook node, set CHAINHOOK_NODE_URL=http://localhost:20456 (or your node URL).`,
-          ].join(" ")
+          ].join(" "),
         );
       }
 
       console.log(
-        `Registering predicates against local chainhook node ${CHAINHOOK_NODE_URL} (${STACKS_NETWORK})...`
+        `Registering predicates against local chainhook node ${CHAINHOOK_NODE_URL} (${STACKS_NETWORK})...`,
       );
       await registerPredicates(predicates, CHAINHOOK_NODE_URL);
       console.log("Predicates registered.");
@@ -384,7 +384,7 @@ const server = app.listen(PORT, async () => {
   } catch (error: unknown) {
     console.error(
       "Failed to register chainhooks:",
-      getErrorMessage(error) ?? error
+      getErrorMessage(error) ?? error,
     );
   }
 });

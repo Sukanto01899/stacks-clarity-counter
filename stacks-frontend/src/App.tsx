@@ -49,6 +49,7 @@ function App() {
       />
 
       <div className="min-h-screen  grid grid-cols-1 md:grid-cols-2 p-4 md:w-3/4 mx-auto gap-6">
+        {/* daily checking */}
         <DailyCheckinCard
           userAddress={address}
           setUserAddress={setAddress}
